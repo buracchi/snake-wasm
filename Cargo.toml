@@ -1,0 +1,16 @@
+[package]
+name = "snake-wasm"
+version = "0.1.0"
+authors = ["Fabio Buracchi <45599613+buracchi@users.noreply.github.com>"]
+description = "A simple snake SPA developed with wasm-pack and Rust"
+repository = "https://github.com/buracchi/snake-wasm"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2.83"
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.33"
