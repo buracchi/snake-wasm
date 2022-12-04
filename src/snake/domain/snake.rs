@@ -6,14 +6,13 @@ use crate::snake::domain::board::Board;
 use crate::snake::domain::direction::Direction;
 use crate::snake::domain::game_over_event::GameOverEvent;
 use crate::snake::domain::game_over_event::GameOverEvent::BoundCollisionEvent;
-use crate::snake::domain::square::empty_square::EmptySquare;
-use crate::snake::domain::square::snake_square::SnakeSquare;
 use crate::snake::domain::square::Square;
+use crate::snake::domain::square::Square::{EmptySquare, SnakeSquare};
 
 #[derive(Debug)]
 pub struct Snake {
     board: Weak<Board>,
-    body: LinkedList<Rc<RefCell<Box<dyn Square>>>>,
+    body: LinkedList<Rc<RefCell<Square>>>,
     direction: Direction,
 }
 
@@ -23,7 +22,7 @@ impl Snake {
             Some(b) => b.get_middle_square(),
             None => panic!("Fatal error: invalid board")
         };
-        *starting_square.as_ref().borrow_mut() = Box::new(SnakeSquare::new());
+        *starting_square.as_ref().borrow_mut() = SnakeSquare;
         Self {
             board,
             body: LinkedList::from([starting_square]),
@@ -53,17 +52,17 @@ impl Snake {
         }
     }
 
-    pub fn move_into(&mut self, next_square: &Rc<RefCell<Box<dyn Square>>>) {
-        *next_square.as_ref().borrow_mut() = Box::new(SnakeSquare::new());
+    pub fn move_into(&mut self, next_square: &Rc<RefCell<Square>>) {
+        *next_square.as_ref().borrow_mut() = SnakeSquare;
         self.body.push_front(next_square.clone());
         match self.body.pop_back() {
-            Some(tail_square) => *tail_square.as_ref().borrow_mut() = Box::new(EmptySquare::new()),
+            Some(tail_square) => *tail_square.as_ref().borrow_mut() = EmptySquare,
             None => panic!("Fatal error: snake body was empty")
         }
     }
 
-    pub fn grow_into(&mut self, next_square: &Rc<RefCell<Box<dyn Square>>>) {
-        *next_square.as_ref().borrow_mut() = Box::new(SnakeSquare::new());
+    pub fn grow_into(&mut self, next_square: &Rc<RefCell<Square>>) {
+        *next_square.as_ref().borrow_mut() = SnakeSquare;
         self.body.push_front(next_square.clone());
     }
 }
