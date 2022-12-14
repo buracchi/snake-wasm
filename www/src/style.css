@@ -1,4 +1,57 @@
-.browny {
-    color:brown;
-    font-size: 64pt;
+@import url('https://fonts.googleapis.com/css?family=VT323&display=swap');
+
+html {
+    height: 100%;
+}
+
+* {
+    box-sizing: border-box;
+    outline: 0;
+    margin: 0;
+}
+
+body {
+    height: 100%;
+    background: #202946;
+    padding-top: 4%;
+    padding-left: 24.5%;
+    padding-right: 24.5%;
+    padding-bottom: 13%;
+    font-family: 'VT323';
+    display: flex;
+    flex-direction: column;
+}
+
+#container {
+    flex: 1;
+    background-color: #89a669;
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    padding: 2%;
+    border-radius: 15px;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    height: 80%;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    color: #3b4a2a;
+}
+
+canvas {
+    border: 5px solid #3b4a2a;
+}
+
+p {
+    font-size: 5vmin;
+    margin: 2%;
+    margin-bottom: 0;
 }

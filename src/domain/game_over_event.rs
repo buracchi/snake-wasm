@@ -1,5 +1,5 @@
 pub enum GameOverEvent {
-    BoundCollisionEvent,
+    BorderCollisionEvent,
     NoEmptySquaresEvent,
-    SnakeCollisionEvent
+    SnakeCollisionEvent,
 }

@@ -7,7 +7,8 @@ const webpack = require('webpack');
 module.exports = {
     mode: 'development',
     entry: {
-        app: './src/index.ts'
+        app: './src/index.ts',
+        game_manager: './src/snake-game/snake-game-manager.ts'
     },
     output: {
         filename: '[name].bundle.js',
@@ -27,7 +28,9 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            title: 'Snake WASM Game',
+        }),
         new WasmPackPlugin({
             crateDirectory: path.resolve(__dirname, ".."),
             outDir: path.resolve(__dirname, "../pkg"),
