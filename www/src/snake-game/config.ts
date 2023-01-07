@@ -6,5 +6,4 @@ export default {
     SNAKE_INITIAL_LENGTH: 3,
     SNAKE_INITIAL_SPEED: 0.006,
     SNAKE_INITIAL_DIRECTION: InputDirection.RIGHT,
-    FPS: 60
 }

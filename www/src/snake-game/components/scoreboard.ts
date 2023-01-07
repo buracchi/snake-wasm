@@ -1,39 +1,38 @@
+import { CanvasResizeEvent } from "./canvas-container";
+
 export class Scoreboard {
-    currentScore: number;
-    bestScore: number;
     htmlElement: HTMLElement;
-    currScoreParagraph: HTMLParagraphElement;
-    bestScoreParagraph: HTMLParagraphElement;
+    currentScoreElement: HTMLParagraphElement;
+    bestScoreElement: HTMLParagraphElement;
     currScoreSpan: HTMLSpanElement;
     bestScoreSpan: HTMLSpanElement;
 
     constructor() {
-        this.currentScore = 0;
-        this.bestScore = 0;
         this.htmlElement = document.createElement('header');
-        this.currScoreParagraph = document.createElement('p');
-        this.bestScoreParagraph = document.createElement('p');
-        this.currScoreParagraph.innerText = "CURRENT: ";
-        this.bestScoreParagraph.innerText = "BEST: ";
+        this.htmlElement.id = 'scoreboard';
+        this.currentScoreElement = document.createElement('p');
+        this.bestScoreElement = document.createElement('p');
+        this.currentScoreElement.innerText = "CURRENT: ";
+        this.bestScoreElement.innerText = "BEST: ";
         this.currScoreSpan = document.createElement('span');
         this.bestScoreSpan = document.createElement('span');
-        this.currScoreParagraph.appendChild(this.currScoreSpan);
-        this.bestScoreParagraph.appendChild(this.bestScoreSpan);
-        this.htmlElement.appendChild(this.currScoreParagraph);
-        this.htmlElement.appendChild(this.bestScoreParagraph);
+        this.currentScoreElement.appendChild(this.currScoreSpan);
+        this.bestScoreElement.appendChild(this.bestScoreSpan);
+        this.htmlElement.appendChild(this.currentScoreElement);
+        this.htmlElement.appendChild(this.bestScoreElement);
         this.currScoreSpan.id = "current-score";
         this.bestScoreSpan.id = "best-score";
-        this.currScoreSpan.innerText = this.currentScore.toString();
-        this.bestScoreSpan.innerText = this.bestScore.toString();
+        document.addEventListener('canvas-resize', (event: CanvasResizeEvent) => {
+            this.htmlElement.style.width = `${event.width}px`;
+        });
     }
 
     setCurrentScore(score: number) {
-        this.currentScore = score;
-        this.currScoreSpan.innerText = this.currentScore.toString();
+        this.currScoreSpan.innerText = score.toString();
     }
 
     setBestScore(score: number) {
-        this.bestScore = score;
-        this.bestScoreSpan.innerText = this.bestScore.toString();
+        this.bestScoreSpan.innerText = score.toString();
     }
+
 }

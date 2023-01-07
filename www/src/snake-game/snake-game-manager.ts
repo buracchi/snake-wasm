@@ -26,21 +26,20 @@ export class SnakeGameManager {
     canvasContainer: CanvasContainer;
 
     constructor() {
-        this.restart();
+        this.inputSystem = new InputSystem(this.onStop.bind(this));
         this.scoreboard = new Scoreboard();
         this.canvasContainer = new CanvasContainer();
         this.root = document.createElement('div');
         this.root.id = 'container';
         this.root.appendChild(this.scoreboard.htmlElement);
         this.root.appendChild(this.canvasContainer.container);
+        this.restart();
         this.renderingSystem = new RenderingSystem(
-            this.scoreboard,
             this.canvasContainer,
             this.game.board.width,
             this.game.board.height,
             this.render.bind(this)
         );
-        this.inputSystem = new InputSystem(this.onStop.bind(this));
         this.lastUpdate = undefined;
         this.stopTime = undefined;
     }
@@ -65,6 +64,7 @@ export class SnakeGameManager {
             CONFIG.SNAKE_INITIAL_SPEED,
             CONFIG.SNAKE_INITIAL_DIRECTION
         );
+        this.inputSystem.direction = undefined;
         this.lastUpdate = undefined
         this.stopTime = undefined
     }
@@ -73,23 +73,29 @@ export class SnakeGameManager {
         this.renderingSystem.render(this.game.board.food, this.game.export_snake() as SnakeDto, this.game.score, this.getBestScore());
     }
 
+    updateScore() {
+        if (this.game.score > this.getBestScore()) {
+            this.setBestScore(this.game.score);
+        }
+        this.scoreboard.setCurrentScore(this.game.score);
+        this.scoreboard.setBestScore(this.getBestScore());
+    }
+
     onUpdate() {
-        if (!this.stopTime) {
+        if (this.game.is_over) {
+            this.restart();
+        }
+        else if (!this.stopTime) {
             const now: number = Date.now();
             if (this.lastUpdate) {
                 this.game.set_input_direction(this.inputSystem.direction);
                 this.game.run_for(now - this.lastUpdate);
-                if (this.game.is_over) {
-                    this.restart();
-                    return;
-                }
-                if (this.game.score > this.getBestScore()) {
-                    this.setBestScore(this.game.score);
-                }
+                this.updateScore();
             }
             this.lastUpdate = now;
             this.render();
         }
+        requestAnimationFrame(this.onUpdate.bind(this));
     }
 
     onStop() {
@@ -103,8 +109,8 @@ export class SnakeGameManager {
         }
     }
 
-    run() {
-        setInterval(this.onUpdate.bind(this), 1000 / CONFIG.FPS);
+    startGame() {
+        this.onUpdate();
     }
 
 }

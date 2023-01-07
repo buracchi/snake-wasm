@@ -1,10 +1,8 @@
 import { Food, Vector as Vector } from "snake-wasm";
-import { CanvasContainer } from "./components/canvas-container";
-import { Scoreboard } from "./components/scoreboard";
+import { CanvasContainer, CanvasResizeEvent } from "./components/canvas-container";
 import { SnakeDto } from "./snake-game-manager";
 
 export class RenderingSystem {
-    scoreboard: Scoreboard;
     canvasContainer: CanvasContainer;
     gameWidth: number;
     gameHeight: number;
@@ -12,8 +10,7 @@ export class RenderingSystem {
     projectScalar: (scalar: number, unitOnScreen: number) => number;
     projectVector: (vector: Vector, unitOnScreen: number) => Vector;
 
-    constructor(scoreboard: Scoreboard, canvasContainer: CanvasContainer, gameWidth: number, gameHeight: number, onResize = () => { }) {
-        this.scoreboard = scoreboard;
+    constructor(canvasContainer: CanvasContainer, gameWidth: number, gameHeight: number, onResize = () => { }) {
         this.canvasContainer = canvasContainer;
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
@@ -36,6 +33,7 @@ export class RenderingSystem {
         canvas.setAttribute('width', this.projectScalar(this.gameWidth, this.unitOnScreen).toString());
         canvas.setAttribute('height', this.projectScalar(this.gameHeight, this.unitOnScreen).toString());
         context.clearRect(0, 0, this.canvasContainer.canvas.width, this.canvasContainer.canvas.height);
+        document.dispatchEvent(new CanvasResizeEvent(canvas.width, canvas.height));
     }
 
     render(food: Food, snake: SnakeDto, score: number, bestScore: number) {
@@ -44,8 +42,6 @@ export class RenderingSystem {
         context.clearRect(0, 0, canvas.width, canvas.height);
         this.renderFood(food);
         this.renderSnake(snake);
-        this.scoreboard.setCurrentScore(score);
-        this.scoreboard.setBestScore(bestScore);
     }
 
     private renderFood(food: Food) {

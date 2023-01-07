@@ -4,7 +4,7 @@ export class CanvasContainer {
     context: CanvasRenderingContext2D;
 
     private resize_observer: ResizeObserver;
-    
+
     constructor() {
         this.container = document.createElement('main');
         this.canvas = document.createElement('canvas');
@@ -24,4 +24,15 @@ export class CanvasContainer {
         this.context = this.canvas.getContext('2d');
     }
 
+}
+
+export class CanvasResizeEvent extends Event {
+    public width: number;
+    public height: number;
+
+    constructor(width: number, height: number) {
+        super('canvas-resize');
+        this.width = width;
+        this.height = height;
+    }
 }
